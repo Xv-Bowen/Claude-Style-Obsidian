@@ -22,7 +22,7 @@ Icons from Lucide (https://lucide.dev): ISC License, Copyright (c) 2026 Lucide I
 }
 
 body {
-  --claude-style: "1.2.0";
+  --claude-style: "1.2.1";
 
   --font-text-theme: "Anthropic Serif", "Times New Roman", "PingFang SC", "Microsoft YaHei", serif;
   --font-interface-theme: "Anthropic Sans", system-ui, -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
@@ -1783,11 +1783,11 @@ body {
   container: claude-file-card / inline-size;
 }
 
-.markdown-rendered div:has(> p.claude-file-card-p) + div > p.claude-file-card-p {
+.markdown-rendered div.claude-file-card-block + div > p.claude-file-card-p {
   margin-block-start: 8px;
 }
 
-.markdown-source-view.mod-cm6 .cm-line:has(> .claude-file-card) {
+.markdown-source-view.mod-cm6 .cm-line.claude-file-card-line {
   container: claude-file-card / inline-size;
 }
 
@@ -1931,7 +1931,7 @@ body:not(.is-mobile) .workspace-split.mod-primary-split .workspace-sidedock-vaul
   border-top-width: 0.5px;
 }
 
-body:not(.is-mobile) .workspace-split.mod-primary-split .workspace-drawer-vault-actions > .clickable-icon:has(> svg.help) {
+body:not(.is-mobile) .workspace-split.mod-primary-split .workspace-drawer-vault-actions > .clickable-icon:first-child:not(:last-child) {
   display: none;
 }
 
@@ -1994,8 +1994,7 @@ body:not(.is-mobile) .workspace-split.mod-primary-split .workspace-sidedock-vaul
 }
 
 .workspace-split.mod-left-split .workspace-tab-header-container-inner {
-  --claude-tabs: 3;
-  --claude-tab-index: 0;
+  anchor-scope: --claude-tab;
   position: relative;
   isolation: isolate;
   display: flex;
@@ -2011,49 +2010,28 @@ body:not(.is-mobile) .workspace-split.mod-primary-split .workspace-sidedock-vaul
   background-color: var(--claude-alpha-1);
 }
 
+.workspace-split.mod-left-split .workspace-tab-header-container-inner > .workspace-tab-header.is-active {
+  anchor-name: --claude-tab;
+}
+
 .workspace-split.mod-left-split .workspace-tab-header-container-inner::before {
   content: "";
   position: absolute;
-  top: 1px;
-  left: 1px;
+  position-anchor: --claude-tab;
+  top: anchor(top, -100vh);
+  left: anchor(left);
   z-index: -1;
-  width: calc((100% - 2px) / (var(--claude-tabs) - var(--claude-hidden, 0)));
+  width: anchor-size(width);
   height: 26px;
   border-radius: 6px;
   background-color: var(--claude-segment-thumb);
   box-shadow: 0 0 0 1px var(--claude-border);
-  transform: translateX(calc(100% * (var(--claude-tab-index) - var(--claude-hidden-before, 0))));
-  transition: transform 200ms cubic-bezier(0.32, 0.72, 0, 1);
+  transition: left 200ms cubic-bezier(0.32, 0.72, 0, 1);
   pointer-events: none;
 }
 
-.workspace-split.mod-left-split .workspace-tab-header-container-inner:not(:has(> .workspace-tab-header.is-active))::before {
-  visibility: hidden;
-}
-
-.workspace-split.mod-left-split .workspace-tab-header-container-inner:has(> :nth-child(1):last-child) { --claude-tabs: 1; }
-.workspace-split.mod-left-split .workspace-tab-header-container-inner:has(> :nth-child(2):last-child) { --claude-tabs: 2; }
-.workspace-split.mod-left-split .workspace-tab-header-container-inner:has(> :nth-child(4):last-child) { --claude-tabs: 4; }
-.workspace-split.mod-left-split .workspace-tab-header-container-inner:has(> :nth-child(5):last-child) { --claude-tabs: 5; }
-.workspace-split.mod-left-split .workspace-tab-header-container-inner:has(> :nth-child(2).is-active) { --claude-tab-index: 1; }
-.workspace-split.mod-left-split .workspace-tab-header-container-inner:has(> :nth-child(3).is-active) { --claude-tab-index: 2; }
-.workspace-split.mod-left-split .workspace-tab-header-container-inner:has(> :nth-child(4).is-active) { --claude-tab-index: 3; }
-.workspace-split.mod-left-split .workspace-tab-header-container-inner:has(> :nth-child(5).is-active) { --claude-tab-index: 4; }
-
-.workspace-split.mod-left-split:has(.claude-search-row) .workspace-tab-header[data-type="search"] {
+.workspace-split.mod-left-split.claude-has-search-row .workspace-tab-header[data-type="search"] {
   display: none;
-}
-
-.workspace-split.mod-left-split:has(.claude-search-row) .workspace-tab-header-container-inner:has(> [data-type="search"]) {
-  --claude-hidden: 1;
-}
-
-.workspace-split.mod-left-split:has(.claude-search-row) .workspace-tab-header-container-inner:has(> [data-type="search"] ~ .is-active) {
-  --claude-hidden-before: 1;
-}
-
-.workspace-split.mod-left-split:has(.claude-search-row) .workspace-tab-header-container-inner:has(> [data-type="search"].is-active)::before {
-  visibility: hidden;
 }
 
 .workspace-split.mod-left-split .workspace-tab-header-container .workspace-tab-header,
@@ -2228,7 +2206,7 @@ body:not(.is-mobile) .workspace-split.mod-primary-split .workspace-sidedock-vaul
   --claude-tree-icon-size: 17.2px;
 }
 
-.workspace-leaf-content[data-type="file-explorer"] .nav-header:has(> .claude-vault-root) {
+.workspace-leaf-content[data-type="file-explorer"].claude-has-vault-root .nav-header {
   padding-block-end: 0;
 }
 
@@ -2236,19 +2214,19 @@ body:not(.is-mobile) .workspace-split.mod-primary-split .workspace-sidedock-vaul
   margin-inline: 4px;
 }
 
-.workspace-leaf-content[data-type="file-explorer"]:has(.claude-vault-root) .nav-files-container {
+.workspace-leaf-content[data-type="file-explorer"].claude-has-vault-root .nav-files-container {
   padding-block-start: 0;
 }
 
-.workspace-leaf-content[data-type="file-explorer"]:has(.claude-vault-root) .nav-files-container .tree-item-self > .tree-item-inner {
+.workspace-leaf-content[data-type="file-explorer"].claude-has-vault-root .nav-files-container .tree-item-self > .tree-item-inner {
   margin-inline-start: 16px;
 }
 
-.workspace-leaf-content[data-type="file-explorer"]:has(.claude-vault-root) .nav-files-container .tree-item-self > .tree-item-icon {
+.workspace-leaf-content[data-type="file-explorer"].claude-has-vault-root .nav-files-container .tree-item-self > .tree-item-icon {
   margin-inline-start: calc(16px - var(--size-4-5));
 }
 
-.workspace-leaf-content[data-type="file-explorer"]:has(.claude-vault-root.is-collapsed) .nav-files-container > div {
+.workspace-leaf-content[data-type="file-explorer"].claude-vault-collapsed .nav-files-container > div {
   display: none;
 }
 
@@ -2309,7 +2287,7 @@ body:not(.is-mobile) .workspace-split.mod-primary-split .workspace-sidedock-vaul
   opacity: 0.5;
 }
 
-body:has(.claude-sidebar-nav) .workspace-split.mod-root .view-header-nav-buttons {
+body.claude-has-sidebar-nav .workspace-split.mod-root .view-header-nav-buttons {
   display: none;
 }
 
@@ -2329,8 +2307,7 @@ body {
   min-width: 128px;
 }
 
-.menu-item:has(~ .menu-item svg.lucide-x) > .menu-item-icon > svg.lucide-x,
-.menu-item:has(svg.lucide-x) ~ .menu-item > .menu-item-icon > svg.lucide-x {
+.menu-group > .menu-item[data-section="close"]:not(:only-child) > .menu-item-icon > svg.lucide-x {
   visibility: hidden;
 }
 
@@ -2474,9 +2451,12 @@ body {
   font-size: 12px;
 }
 
-.suggestion-item .suggestion-aux:has(> .suggestion-hotkey) {
-  gap: 8px;
-  margin-inline-start: 12px;
+.suggestion-item .suggestion-aux > .suggestion-hotkey:first-child {
+  padding-inline-start: 12px;
+}
+
+.suggestion-item.mod-complex .suggestion-aux > .suggestion-hotkey + * {
+  padding-inline-start: calc(8px - var(--size-2-1));
 }
 
 .suggestion-item.mod-complex .suggestion-hotkey,
@@ -2749,7 +2729,7 @@ body:not(.is-mobile) input[type=range]:disabled {
   line-height: 20px;
 }
 
-:is(.markdown-source-view, .markdown-reading-view):has(> .document-search-container) {
+.workspace-leaf-content[data-type="markdown"] > .view-content > :is(.markdown-source-view, .markdown-reading-view) {
   position: relative;
 }
 
@@ -2854,22 +2834,43 @@ body:not(.is-mobile) input[type=range]:disabled {
   font-style: normal;
 }
 
-.document-search-buttons::before,
-.pdf-findbar-message::after {
+.document-search-buttons > .clickable-icon:first-child,
+.pdf-search-wrapper > button.clickable-icon:first-of-type {
+  position: relative;
+}
+
+.document-search-buttons > .clickable-icon:first-child {
+  margin-inline-start: 3px;
+}
+
+.pdf-findbar .pdf-findbar-message {
+  padding-inline-end: 9px;
+}
+
+.document-search-buttons > .clickable-icon:first-child::before,
+.pdf-search-wrapper > button.clickable-icon:first-of-type::before {
   content: "";
-  flex: none;
+  position: absolute;
+  top: 4px;
+  inset-inline-start: -3px;
   width: 1px;
   height: 16px;
-  margin-inline: 8px 0;
   background-color: var(--claude-border);
+  pointer-events: none;
 }
 
-.document-search-buttons::before {
-  margin-inline: 0 1px;
+.pdf-search-wrapper > button.clickable-icon:first-of-type::before {
+  inset-inline-start: calc(-1px - var(--size-4-1));
 }
 
-.document-search-container:has(.document-search input:focus, .document-search-buttons > :first-child:hover) .document-search-buttons::before,
-.pdf-findbar:has(input:focus, .pdf-search-wrapper > button:first-of-type:hover) .pdf-findbar-message::after {
+.is-phone .pdf-search-wrapper > button.clickable-icon:first-of-type::before {
+  inset-inline-start: calc(-1px - var(--size-4-2));
+}
+
+.document-search-input:focus-within + .document-search-buttons > .clickable-icon:first-child::before,
+.document-search-buttons > .clickable-icon:first-child:hover::before,
+.pdf-search-wrapper > .search-input-container:focus-within ~ button.clickable-icon:first-of-type::before,
+.pdf-search-wrapper > button.clickable-icon:first-of-type:hover::before {
   opacity: 0;
 }
 
@@ -3096,7 +3097,7 @@ body {
   line-height: 16px;
 }
 
-.workspace-leaf-content[data-type="markdown"] .view-actions > .view-action:has(> svg.lucide-book-open, > svg.lucide-edit-3) {
+.workspace-leaf-content[data-type="markdown"] .view-actions > .view-action:nth-last-child(2) {
   display: none;
 }
 
@@ -3262,16 +3263,82 @@ body {
   color: inherit;
 }
 
-.print .markdown-rendered > :is(h1, div:has(> :is(h1, h2, h3, h4, h5, h6))) + div > * {
+.print .markdown-rendered > :is(h1, div.claude-block-heading) + div > * {
   margin-block-start: calc(var(--claude-flow) * 0.667);
 }
 
-.print .markdown-rendered > :is(hr, div:has(> :is(ul, ol, dl, table))) + div > * {
+.print .markdown-rendered > :is(hr, div.claude-block-list) + div > * {
   margin-block-start: calc(var(--claude-flow) * var(--claude-x-break));
 }
 
-.print .markdown-rendered > :is(hr, div:has(> :is(ul, ol, dl, table))) + div > :is(h1, h2, h3, h4, h5, h6) {
+.print .markdown-rendered > :is(hr, div.claude-block-list) + div > :is(h1, h2, h3, h4, h5, h6) {
   margin-block-start: calc(var(--claude-flow) * max(var(--claude-x-break), var(--claude-h-space)));
+}
+
+.print .markdown-rendered > div:not(.claude-block-heading) > :is(h1, h2, h3, h4, h5, h6) {
+  margin-block-end: round(calc(var(--claude-flow) * -0.333), 0.015625px);
+}
+
+.print .markdown-rendered > div:not(.claude-block-list) > :is(ul, ol, dl) {
+  margin-block-end: calc(var(--claude-flow) * var(--claude-x-break));
+}
+
+.print .markdown-rendered > div[style*="overflow-x"]:not(.claude-block-list) {
+  margin-block: var(--claude-flow) calc(var(--claude-flow) * var(--claude-x-break));
+}
+
+.print .markdown-rendered > div[style*="overflow-x"]:not(.claude-block-list) > table {
+  margin-block-start: 0;
+}
+
+@counter-style claude-unless-after-heading {
+  system: fixed 0;
+  symbols: "\A0" "";
+}
+
+@counter-style claude-if-after-heading {
+  system: fixed 0;
+  symbols: "" "\A0";
+}
+
+.print .markdown-rendered {
+  counter-reset: claude-after-heading;
+}
+
+.print .markdown-rendered > div > :not(h1, h2, h3, h4, h5, h6) {
+  counter-set: claude-after-heading 0;
+}
+
+.print .markdown-rendered > div:not(.claude-block-heading) > :is(h1, h2, h3, h4, h5, h6)::after {
+  content: "";
+  counter-set: claude-after-heading 1;
+}
+
+.print .markdown-rendered > div:not(.claude-block-heading) > :is(h1, h2, h3, h4, h5, h6)::before {
+  content: counter(claude-after-heading, claude-unless-after-heading);
+  display: block;
+  margin-block-end: round(calc(var(--claude-flow) * (0.667 - var(--claude-h-space))), 0.015625px);
+  line-height: round(calc(var(--claude-flow) * (var(--claude-h-space) - 0.667)), 0.015625px);
+  break-after: avoid;
+}
+
+.print .markdown-rendered > hr {
+  height: auto;
+  overflow: visible;
+  border-top-width: 0;
+}
+
+.print .markdown-rendered > hr::before {
+  content: counter(claude-after-heading, claude-if-after-heading);
+  display: block;
+  line-height: round(calc(var(--claude-flow) * 0.333), 0.015625px);
+}
+
+.print .markdown-rendered > hr::after {
+  content: "";
+  display: block;
+  border-top: var(--hr-thickness) solid var(--hr-color);
+  counter-set: claude-after-heading 0;
 }
 
 @media print {
