@@ -15,6 +15,24 @@ Icons from Lucide (https://lucide.dev): ISC License, Copyright (c) 2026 Lucide I
   initial-value: 0px;
 }
 
+@property --claude-list-step {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 0px;
+}
+
+@property --claude-task-step {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 0px;
+}
+
+@property --claude-task-text {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 0px;
+}
+
 @property --claude-leading {
   syntax: "<length>";
   inherits: true;
@@ -22,7 +40,7 @@ Icons from Lucide (https://lucide.dev): ISC License, Copyright (c) 2026 Lucide I
 }
 
 body {
-  --claude-style: "1.2.2";
+  --claude-style: "1.2.3";
 
   --font-text-theme: "Anthropic Serif", "Times New Roman", "PingFang SC", "Microsoft YaHei", serif;
   --font-interface-theme: "Anthropic Sans", system-ui, -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
@@ -799,6 +817,65 @@ body:is(:lang(zh), :lang(ja), :lang(ko)) {
   --list-bullet-radius: 0;
 }
 
+.markdown-source-view.mod-cm6.is-live-preview {
+  --list-indent: 2.5em;
+  --claude-list-step: 2.5em;
+  --claude-task-step: 2em;
+  --claude-task-text: calc(13px - 0.6782em);
+}
+
+.markdown-source-view.mod-cm6.is-live-preview .HyperMD-list-line.HyperMD-task-line {
+  --list-indent: 2em;
+}
+
+.markdown-source-view.mod-cm6.is-live-preview .HyperMD-task-line .task-list-label {
+  margin-inline-start: 2em;
+}
+
+.markdown-source-view.mod-cm6.is-live-preview .HyperMD-task-line .task-list-item-checkbox {
+  top: 0;
+  font-size: inherit;
+  margin-inline: -1.375em 0.5em;
+  vertical-align: baseline;
+  translate: 0 0.1em;
+}
+
+.markdown-source-view.mod-cm6.is-live-preview .HyperMD-list-line.HyperMD-task-line:not(.HyperMD-list-line-nobullet) > .cm-hmd-list-indent-1 { min-width: 2em; }
+.markdown-source-view.mod-cm6.is-live-preview .HyperMD-list-line.HyperMD-task-line:not(.HyperMD-list-line-nobullet) > .cm-hmd-list-indent-2 { min-width: 4em; }
+.markdown-source-view.mod-cm6.is-live-preview .HyperMD-list-line.HyperMD-task-line:not(.HyperMD-list-line-nobullet) > .cm-hmd-list-indent-3 { min-width: 6em; }
+.markdown-source-view.mod-cm6.is-live-preview .HyperMD-list-line.HyperMD-task-line:not(.HyperMD-list-line-nobullet) > .cm-hmd-list-indent-4 { min-width: 8em; }
+.markdown-source-view.mod-cm6.is-live-preview .HyperMD-list-line.HyperMD-task-line:not(.HyperMD-list-line-nobullet) > .cm-hmd-list-indent-5 { min-width: 10em; }
+.markdown-source-view.mod-cm6.is-live-preview .HyperMD-list-line.HyperMD-task-line:not(.HyperMD-list-line-nobullet) > .cm-hmd-list-indent-6 { min-width: 12em; }
+.markdown-source-view.mod-cm6.is-live-preview .HyperMD-list-line.HyperMD-task-line:not(.HyperMD-list-line-nobullet) > .cm-hmd-list-indent-7 { min-width: 14em; }
+.markdown-source-view.mod-cm6.is-live-preview .HyperMD-list-line.HyperMD-task-line:not(.HyperMD-list-line-nobullet) > .cm-hmd-list-indent-8 { min-width: 16em; }
+
+.markdown-source-view.mod-cm6.is-live-preview .cm-line[style*="--claude-item-shift"] {
+  position: relative;
+  inset-inline-start: var(--claude-item-shift);
+  width: calc(100% - var(--claude-item-shift));
+}
+
+.markdown-source-view.mod-cm6.is-live-preview .HyperMD-codeblock {
+  --list-indent: calc(var(--indent-unit) * var(--indent-size));
+}
+
+.markdown-source-view.mod-cm6.is-live-preview .HyperMD-list-line:not(.HyperMD-list-line-nobullet, .HyperMD-codeblock, .HyperMD-quote) > .cm-hmd-list-indent-1 { min-width: 2.5em; }
+.markdown-source-view.mod-cm6.is-live-preview .HyperMD-list-line:not(.HyperMD-list-line-nobullet, .HyperMD-codeblock, .HyperMD-quote) > .cm-hmd-list-indent-2 { min-width: 5.0em; }
+.markdown-source-view.mod-cm6.is-live-preview .HyperMD-list-line:not(.HyperMD-list-line-nobullet, .HyperMD-codeblock, .HyperMD-quote) > .cm-hmd-list-indent-3 { min-width: 7.5em; }
+.markdown-source-view.mod-cm6.is-live-preview .HyperMD-list-line:not(.HyperMD-list-line-nobullet, .HyperMD-codeblock, .HyperMD-quote) > .cm-hmd-list-indent-4 { min-width: 10.0em; }
+.markdown-source-view.mod-cm6.is-live-preview .HyperMD-list-line:not(.HyperMD-list-line-nobullet, .HyperMD-codeblock, .HyperMD-quote) > .cm-hmd-list-indent-5 { min-width: 12.5em; }
+.markdown-source-view.mod-cm6.is-live-preview .HyperMD-list-line:not(.HyperMD-list-line-nobullet, .HyperMD-codeblock, .HyperMD-quote) > .cm-hmd-list-indent-6 { min-width: 15.0em; }
+.markdown-source-view.mod-cm6.is-live-preview .HyperMD-list-line:not(.HyperMD-list-line-nobullet, .HyperMD-codeblock, .HyperMD-quote) > .cm-hmd-list-indent-7 { min-width: 17.5em; }
+.markdown-source-view.mod-cm6.is-live-preview .HyperMD-list-line:not(.HyperMD-list-line-nobullet, .HyperMD-codeblock, .HyperMD-quote) > .cm-hmd-list-indent-8 { min-width: 20.0em; }
+
+.markdown-source-view.mod-cm6.is-live-preview :is(.cm-formatting-list-ul, .cm-formatting-list-ol) {
+  display: inline-block;
+  box-sizing: border-box;
+  min-width: 2.5em;
+  padding-inline-start: 0;
+  text-align: end;
+}
+
 .markdown-source-view.mod-cm6.is-live-preview .cm-formatting-list-ul .list-bullet {
   margin-inline-end: 13.5px;
 }
@@ -1013,7 +1090,8 @@ body:is(:lang(zh), :lang(ja), :lang(ko)) {
   width: 13px;
   height: 13px;
   margin-block: 0;
-  margin-inline: -1.375em 0.5em;
+  font-size: inherit;
+  margin-inline: -1.375em calc(0.5em + 0.1968em);
   border: none;
   vertical-align: baseline;
   translate: 0 0.1em;
@@ -1498,7 +1576,8 @@ body {
   --code-radius: 12px;
 }
 
-.markdown-source-view.mod-cm6 .HyperMD-codeblock {
+.markdown-source-view.mod-cm6 .HyperMD-codeblock,
+.markdown-source-view.mod-cm6 .cm-line.HyperMD-codeblock:not(.HyperMD-list-line) {
   padding-inline: 14px;
   font-variation-settings: normal;
   font-feature-settings: "calt" 0, "liga" 0;
