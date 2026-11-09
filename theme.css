@@ -40,7 +40,7 @@ Icons from Lucide (https://lucide.dev): ISC License, Copyright (c) 2026 Lucide I
 }
 
 body {
-  --claude-style: "1.2.3";
+  --claude-style: "1.2.4";
 
   --font-text-theme: "Anthropic Serif", "Times New Roman", "PingFang SC", "Microsoft YaHei", serif;
   --font-interface-theme: "Anthropic Sans", system-ui, -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
@@ -639,7 +639,6 @@ body:is(:lang(zh), :lang(ja), :lang(ko)) {
 }
 
 .markdown-rendered :is(del, s) {
-  text-decoration-line: line-through;
   text-decoration-color: color-mix(in oklab, currentColor 60%, transparent);
 }
 
@@ -1589,11 +1588,10 @@ body {
   position: relative;
   inset-inline-start: var(--claude-list-shift);
   width: calc(100% - var(--claude-list-shift));
-  text-indent: calc(var(--claude-list-indent, 0) * -1ch);
 }
 
-.markdown-source-view.mod-cm6.is-live-preview .cm-line.HyperMD-codeblock[class*="claude-list-level-"] * {
-  text-indent: 0;
+.markdown-source-view.mod-cm6.is-live-preview .cm-line.HyperMD-codeblock[class*="claude-list-level-"] > :first-child {
+  margin-inline-start: calc(var(--claude-list-indent, 0) * -1ch);
 }
 
 .markdown-source-view.mod-cm6.is-live-preview .cm-line.HyperMD-codeblock[class*="claude-list-level-"] > .cm-hmd-list-indent > .cm-indent-spacing:last-child {
@@ -1730,13 +1728,13 @@ body {
   margin-block-end: 0;
 }
 
-.markdown-rendered mjx-container,
-.markdown-source-view.mod-cm6 mjx-container {
+.markdown-rendered .MathJax,
+.markdown-source-view.mod-cm6 .MathJax {
   font-size: 1.21em;
 }
 
-.markdown-rendered .math-block > mjx-container[display],
-.markdown-source-view.mod-cm6 .math-block > mjx-container[display] {
+.markdown-rendered .math-block > .MathJax[display],
+.markdown-source-view.mod-cm6 .math-block > .MathJax[display] {
   margin: 0;
   padding-block: 2px;
   overflow: auto hidden;
@@ -1857,7 +1855,7 @@ body {
 
 .markdown-rendered a.tag {
   border-radius: var(--tag-radius);
-  text-decoration-line: none;
+  text-decoration: none;
 }
 
 @property --claude-card-wash {
@@ -1968,7 +1966,7 @@ body {
   font-weight: 400;
   line-height: 18px;
   text-align: start;
-  text-decoration-line: none;
+  text-decoration: none;
   white-space: normal;
   cursor: var(--cursor-link);
   user-select: none;
@@ -1991,7 +1989,7 @@ body {
   --claude-under-move: 0.45s var(--claude-ease-out);
   --claude-under-fade: 0.12s var(--claude-ease-out);
   color: var(--claude-text-primary);
-  text-decoration-line: none;
+  text-decoration: none;
 }
 
 :is(.markdown-rendered, .markdown-source-view) .claude-file-card:focus-visible {
@@ -3707,7 +3705,7 @@ body {
   display: block;
   margin-block-end: round(calc(var(--claude-flow) * (0.667 - var(--claude-h-space))), 0.015625px);
   line-height: round(calc(var(--claude-flow) * (var(--claude-h-space) - 0.667)), 0.015625px);
-  break-after: avoid;
+  page-break-after: avoid;
 }
 
 .print .markdown-rendered > hr {
@@ -3731,11 +3729,11 @@ body {
 
 @media print {
   .markdown-rendered :is(h1, h2, h3, h4, h5, h6, .callout-title, summary) {
-    break-after: avoid;
+    page-break-after: avoid;
   }
 
   .markdown-rendered :is(.math-block, .mermaid, figure, img, tr, details, .claude-file-card) {
-    break-inside: avoid;
+    page-break-inside: avoid;
   }
 
   .markdown-rendered :is(pre, blockquote, .callout) {
@@ -3744,7 +3742,7 @@ body {
   }
 
   .markdown-rendered pre::before {
-    break-after: avoid;
+    page-break-after: avoid;
   }
 
   .markdown-rendered :is(pre, pre > code, .callout) {
@@ -3789,59 +3787,81 @@ body {
     overflow-wrap: anywhere;
   }
 
-  .markdown-rendered div:has(> table) {
+  .markdown-rendered :is(div[style*="overflow-x: auto"], .callout-content) {
     container-type: inline-size;
   }
 
-  .markdown-rendered table:has(tr > :nth-child(13)) {
+  .markdown-rendered tr > :nth-last-child(n+13),
+  .markdown-rendered tr > :nth-last-child(n+13) ~ * {
     --table-column-min-width: 0;
-  }
-
-  .markdown-rendered table:has(tr > :nth-child(13)) :is(th, td) {
     overflow-wrap: anywhere;
   }
 
   @container (width < 1200px) {
-    .markdown-rendered table:has(tr > :nth-child(12)) { --table-column-min-width: 0; }
-    .markdown-rendered table:has(tr > :nth-child(12)) :is(th, td) { overflow-wrap: anywhere; }
+    .markdown-rendered :is(div[style*="overflow-x: auto"], .callout-content) > table tr > :nth-last-child(n+12),
+    .markdown-rendered :is(div[style*="overflow-x: auto"], .callout-content) > table tr > :nth-last-child(n+12) ~ * {
+      --table-column-min-width: 0;
+      overflow-wrap: anywhere;
+    }
   }
 
   @container (width < 1100px) {
-    .markdown-rendered table:has(tr > :nth-child(11)) { --table-column-min-width: 0; }
-    .markdown-rendered table:has(tr > :nth-child(11)) :is(th, td) { overflow-wrap: anywhere; }
+    .markdown-rendered :is(div[style*="overflow-x: auto"], .callout-content) > table tr > :nth-last-child(n+11),
+    .markdown-rendered :is(div[style*="overflow-x: auto"], .callout-content) > table tr > :nth-last-child(n+11) ~ * {
+      --table-column-min-width: 0;
+      overflow-wrap: anywhere;
+    }
   }
 
   @container (width < 1000px) {
-    .markdown-rendered table:has(tr > :nth-child(10)) { --table-column-min-width: 0; }
-    .markdown-rendered table:has(tr > :nth-child(10)) :is(th, td) { overflow-wrap: anywhere; }
+    .markdown-rendered :is(div[style*="overflow-x: auto"], .callout-content) > table tr > :nth-last-child(n+10),
+    .markdown-rendered :is(div[style*="overflow-x: auto"], .callout-content) > table tr > :nth-last-child(n+10) ~ * {
+      --table-column-min-width: 0;
+      overflow-wrap: anywhere;
+    }
   }
 
   @container (width < 900px) {
-    .markdown-rendered table:has(tr > :nth-child(9)) { --table-column-min-width: 0; }
-    .markdown-rendered table:has(tr > :nth-child(9)) :is(th, td) { overflow-wrap: anywhere; }
+    .markdown-rendered :is(div[style*="overflow-x: auto"], .callout-content) > table tr > :nth-last-child(n+9),
+    .markdown-rendered :is(div[style*="overflow-x: auto"], .callout-content) > table tr > :nth-last-child(n+9) ~ * {
+      --table-column-min-width: 0;
+      overflow-wrap: anywhere;
+    }
   }
 
   @container (width < 800px) {
-    .markdown-rendered table:has(tr > :nth-child(8)) { --table-column-min-width: 0; }
-    .markdown-rendered table:has(tr > :nth-child(8)) :is(th, td) { overflow-wrap: anywhere; }
+    .markdown-rendered :is(div[style*="overflow-x: auto"], .callout-content) > table tr > :nth-last-child(n+8),
+    .markdown-rendered :is(div[style*="overflow-x: auto"], .callout-content) > table tr > :nth-last-child(n+8) ~ * {
+      --table-column-min-width: 0;
+      overflow-wrap: anywhere;
+    }
   }
 
   @container (width < 700px) {
-    .markdown-rendered table:has(tr > :nth-child(7)) { --table-column-min-width: 0; }
-    .markdown-rendered table:has(tr > :nth-child(7)) :is(th, td) { overflow-wrap: anywhere; }
+    .markdown-rendered :is(div[style*="overflow-x: auto"], .callout-content) > table tr > :nth-last-child(n+7),
+    .markdown-rendered :is(div[style*="overflow-x: auto"], .callout-content) > table tr > :nth-last-child(n+7) ~ * {
+      --table-column-min-width: 0;
+      overflow-wrap: anywhere;
+    }
   }
 
   @container (width < 600px) {
-    .markdown-rendered table:has(tr > :nth-child(6)) { --table-column-min-width: 0; }
-    .markdown-rendered table:has(tr > :nth-child(6)) :is(th, td) { overflow-wrap: anywhere; }
+    .markdown-rendered :is(div[style*="overflow-x: auto"], .callout-content) > table tr > :nth-last-child(n+6),
+    .markdown-rendered :is(div[style*="overflow-x: auto"], .callout-content) > table tr > :nth-last-child(n+6) ~ * {
+      --table-column-min-width: 0;
+      overflow-wrap: anywhere;
+    }
   }
 
   @container (width < 500px) {
-    .markdown-rendered table:has(tr > :nth-child(5)) { --table-column-min-width: 0; }
-    .markdown-rendered table:has(tr > :nth-child(5)) :is(th, td) { overflow-wrap: anywhere; }
+    .markdown-rendered :is(div[style*="overflow-x: auto"], .callout-content) > table tr > :nth-last-child(n+5),
+    .markdown-rendered :is(div[style*="overflow-x: auto"], .callout-content) > table tr > :nth-last-child(n+5) ~ * {
+      --table-column-min-width: 0;
+      overflow-wrap: anywhere;
+    }
   }
 
-  .markdown-rendered mjx-container {
+  .markdown-rendered .MathJax {
     overflow: visible;
   }
 

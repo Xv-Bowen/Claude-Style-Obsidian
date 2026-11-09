@@ -105,6 +105,7 @@ The author's own settings, for reference: in **Settings → Appearance**, Show t
 | Other views | Tabs, the status bar, the graph, canvas, note properties and bases take Claude's colours and look; the title at the top of the window uses the same type as a note's title bar |
 | PDF export | The same styles as the reading view. A heading does not end up alone at the bottom of a page, and a table row is not split across pages; a long code block, quote or callout carries on onto the next page instead of moving down whole and leaving half a page empty, with more than a line or two on each side; wide tables wrap at word breaks and print in full on the page; a picture taller than a page is scaled to fit one |
 | Motion | Only what moves in Claude moves; everything else changes at once |
+| Performance | The theme avoids `:has()` wherever it can. That kind of selector makes Obsidian work out styles again on every change, and the community directory's check warns about it. A few remain in live preview's quotes, where nothing else tells a line that starts with > from one that carries on the line above; measured, they do not make typing slower |
 
 Apart from what is marked "with the plugin", the table describes the theme on its own.
 
